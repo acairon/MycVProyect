@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Consultas SQL</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #f2f2f2;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .form-container label, .form-container textarea, .form-container button {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .form-container textarea {
+      width: 100%;
+      height: 200px;
+    }
+    .form-container button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result-container {
+      margin-top: 20px;
+      background-color: #f2f2f2;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    .result-container pre {
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Generador de Consultas SQL</h1>
+  <div class="form-container">
+    <label for="mermaid-code">Código de Mermaid:</label>
+    <textarea id="mermaid-code" placeholder="Ingrese el código de Mermaid aquí"></textarea>
+    <button id="generate-button">Generar consultas</button>
+  </div>
+  <div class="result-container">
+    <pre id="result"></pre>
+  </div>
+
+  <script>
+    const generateButton = document.getElementById('generate-button');
+    const mermaidCodeInput = document.getElementById('mermaid-code');
+    const resultPre = document.getElementById('result');
+
+    generateButton.addEventListener('click', () => {
+      const mermaidCode = mermaidCodeInput.value;
+      if (mermaidCode.trim() !== '') {
+        generateQueries(mermaidCode);
+      }
+    });
+
+    function generateQueries(mermaidCode) {
+      const apiUrl = 'https://api.angelcairon.com/generate_queries';
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+        },
+        body: JSON.stringify({ code: mermaidCode }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.queries) {
+            resultPre.textContent = data.queries;
+          } else {
+            resultPre.textContent = 'Error generando las consultas SQL';
+          }
+        })
+        .catch(error => {
+          resultPre.textContent = 'Error de conexión con la API';
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+</html>

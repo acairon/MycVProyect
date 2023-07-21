@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de Diagramas ER con Mermaid</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generador de Diagramas ER con Mermaid</h1>
+
+        <div>
+            <h2>Tablas</h2>
+            <ul id="table-list">
+                <!-- Aquí se agregarán las tablas dinámicamente -->
+            </ul>
+
+            <input type="text" id="table-name" placeholder="Nombre de la tabla">
+            <button onclick="addTable()">Agregar tabla</button>
+        </div>
+
+        <div>
+            <h2>Atributos</h2>
+            <select id="table-select" onchange="updateAttributes()">
+                <option value="" disabled selected>Seleccione una tabla</option>
+                <!-- Opciones de tabla -->
+            </select>
+            <ul id="attribute-list">
+                <!-- Aquí se agregarán los atributos dinámicamente -->
+            </ul>
+
+            <input type="text" id="attribute-name" placeholder="Nombre del atributo">
+            <select id="attribute-type">
+                <option value="string">string</option>
+                <option value="int">int</option>
+                <option value="float">float</option>
+                <option value="date">date</option>
+            </select>
+            <button onclick="addAttribute()">Agregar atributo</button>
+        </div>
+
+        <div>
+            <h2>Relaciones</h2>
+            <ul id="relationship-list">
+                <!-- Aquí se agregarán las relaciones dinámicamente -->
+            </ul>
+
+            <select id="table1-select">
+                <option value="" disabled selected>Seleccione una tabla</option>
+                <!-- Opciones de tabla1 -->
+            </select>
+            <select id="degree1-select">
+                <option value="|o">Zero or one</option>
+                <option value="||">Exactly one</option>
+                <option value="}|">Zero or more</option>
+                <option value="|{">One or more</option>
+            </select>
+
+            <select id="table2-select" onchange="updateAttributeSelect()">
+                <option value="" disabled selected>Seleccione una tabla</option>
+                <!-- Opciones de tabla2 -->
+            </select>
+            <select id="degree2-select">
+                <option value="o|">Zero or one</option>
+                <option value="||">Exactly one</option>
+                <option value="o{">Zero or more</option>
+                <option value="{|">One or more</option>
+            </select>
+
+            <!-- Desplegable para los atributos de la tabla2 -->
+            <select id="attribute-select">
+                <option value="" disabled selected>Seleccione un atributo</option>
+                <!-- Opciones de atributos de la tabla2 -->
+            </select>
+            <button onclick="addRelationship()">Agregar relación</button>
+        </div>
+
+        <div>
+            <button onclick="generateMermaidCode()">Generar Código Mermaid</button>
+        </div>
+
+        <div>
+            <h2>Código Mermaid:</h2>
+            <pre id="mermaid-code"></pre>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
