@@ -119,3 +119,4 @@ function generateMermaidCode() {
     });
     document.getElementById("mermaid-code").textContent = mermaidCode;
 }
+
