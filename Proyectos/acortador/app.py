@@ -1,7 +1,7 @@
 import sqlite3
 import random
 import string
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, jsonify
 
 app = Flask(__name__)
 
@@ -16,7 +16,11 @@ def generate_short_url():
 # Ruta para acortar una URL larga
 @app.route('/shorten', methods=['POST'])
 def shorten_url():
-    original_url = request.form['url']
+    data = request.get_json()
+    original_url = data.get('url')
+
+    if not original_url:
+        return jsonify({'error': 'URL no proporcionada'}), 400
 
     # Conectar a la base de datos SQLite
     conn = sqlite3.connect('url_shortener.db')
@@ -35,7 +39,7 @@ def shorten_url():
 
     conn.close()
 
-    return f'URL acortada: http://tu-dominio.com/{short_url}'
+    return jsonify({'shortened_url': f'http://tu-dominio.com/{short_url}'}), 200
 
 
 # Ruta para redireccionar a la URL original
@@ -55,7 +59,7 @@ def redirect_to_original(short_url):
         return redirect(original_url, code=302)
     else:
         conn.close()
-        return 'URL no encontrada', 404
+        return jsonify({'error': 'URL acortada no encontrada'}), 404
 
 
 if __name__ == '__main__':
@@ -69,5 +73,3 @@ if __name__ == '__main__':
                     )''')
     conn.commit()
     conn.close()
-
-    app.run(host='0.0.0.0', port=5000)
