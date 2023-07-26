@@ -42,7 +42,7 @@ def shorten_url():
 
     conn.close()
 
-    return jsonify({'shortened_url': f'http://shorten.angelcairon.com/{short_url}'}), 200
+    return jsonify({'shortened_url': f'http://apishorten.angelcairon.com/{short_url}'}), 200
 
 
 # Ruta para redireccionar a la URL original
