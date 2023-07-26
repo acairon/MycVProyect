@@ -23,6 +23,7 @@ def generate_queries():
 
 
 
+
 # Método para poder extraer las relaciones del diagrama de mermaid
 def extract_relation(mermaid_code):
     relation_pattern = r"(\w+)\s*[|\-o{}]+\s*(\w+)\s*:\s*\"(\w+)\""
