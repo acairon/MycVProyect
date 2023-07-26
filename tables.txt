@@ -1,5 +1,0 @@
-asd
-  asd - varchar(asd), Nullable, Primary Key
-
-asd
-
