@@ -85,16 +85,17 @@
             fetch('https://apishorten.angelcairon.com/shorten', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-                    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+                    'Content-Type': 'application/json'  // Asegura que el encabezado Content-Type sea application/json
                 },
-                body: 'url=' + encodeURIComponent(originalURL)
+                body: JSON.stringify({ url: originalURL })  // Convierte los datos a formato JSON
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                document.getElementById("result").innerHTML = 'URL acortada: <a href="' + data + '" target="_blank">' + data + '</a>';
+                if ('shortened_url' in data) {
+                    document.getElementById("result").innerHTML = 'URL acortada: <a href="' + data.shortened_url + '" target="_blank">' + data.shortened_url + '</a>';
+                } else {
+                    document.getElementById("result").innerHTML = 'Error: ' + data.error;
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
