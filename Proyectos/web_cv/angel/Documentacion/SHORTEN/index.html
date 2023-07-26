@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de la Aplicación de Acortador de URLs</title>
+</head>
+
+<body>
+    <h1>Documentación de la Aplicación de Acortador de URLs</h1>
+
+    <h2>Descripción</h2>
+    <p>Esta aplicación es un servicio de acortador de URLs que permite a los usuarios convertir URLs largas en URLs cortas y fáciles de compartir. La aplicación está desarrollada utilizando Python con el framework Flask para la creación de la API, y se utiliza una base de datos SQLite para almacenar las URLs originales y sus correspondientes versiones acortadas.</p>
+
+    <h2>Instalación y Configuración</h2>
+    <h3>Requisitos previos</h3>
+    <p>Asegúrate de tener instalado lo siguiente:</p>
+    <ul>
+        <li>Python (versión 3.6 o superior)</li>
+        <li>pip (administrador de paquetes de Python)</li>
+    </ul>
+
+    <h3>Pasos de instalación</h3>
+    <ol>
+        <li>Descarga el código fuente de la aplicación desde el repositorio.</li>
+        <li>Navega hasta el directorio donde se encuentra el código fuente.</li>
+        <li>Instala las dependencias requeridas ejecutando el siguiente comando:</li>
+    </ol>
+    <pre><code>pip install -r requirements.txt</code></pre>
+
+    <h2>Configuración de la Base de Datos</h2>
+    <p>Antes de ejecutar la aplicación, asegúrate de crear la base de datos <code>url_shortener.db</code> y la tabla <code>urls</code>. Puedes hacerlo ejecutando el siguiente código Python una vez:</p>
+    <pre><code>
+import sqlite3
+
+# Conectar a la base de datos SQLite
+conn = sqlite3.connect('url_shortener.db')
+cursor = conn.cursor()
+
+# Crear la tabla 'urls' en la base de datos si no existe
+cursor.execute('''CREATE TABLE IF NOT EXISTS urls (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    original_url TEXT NOT NULL,
+                    shortened_url TEXT NOT NULL UNIQUE
+                )''')
+conn.commit()
+conn.close()
+</code></pre>
+
+    <h2>Ejecución de la Aplicación</h2>
+    <p>Una vez que hayas realizado la configuración de la base de datos, puedes ejecutar la aplicación con el siguiente comando:</p>
+    <pre><code>python app.py</code></pre>
+    <p>La aplicación se ejecutará en <code>http://localhost:5000/</code> y estará lista para recibir solicitudes.</p>
+
+    <h2>Uso de la API</h2>
+    <p>La API de acortador de URLs cuenta con dos endpoints:</p>
+
+    <h3>1. Acortar una URL</h3>
+    <ul>
+        <li>Método: POST</li>
+        <li>URL: <code>/shorten</code></li>
+        <li>Parámetros: <code>url</code> (la URL larga a acortar)</li>
+    </ul>
+    <p>Ejemplo de solicitud:</p>
+    <pre><code>
+POST /shorten
+Content-Type: application/json
+
+{
+    "url": "https://www.ejemplo.com/articulo-largo"
+}
+</code></pre>
+    <p>Respuesta:</p>
+    <pre><code>
+{
+    "shortened_url": "http://shorten.angelcairon.com/uXwFnHK0"
+}
+</code></pre>
+
+    <h3>2. Redireccionar a la URL original</h3>
+    <ul>
+        <li>Método: GET</li>
+        <li>URL: <code>/&lt;short_url&gt;</code> (la URL corta generada por la API)</li>
+    </ul>
+    <p>Ejemplo de solicitud:</p>
+    <pre><code>GET /uXwFnHK0</code></pre>
+    <p>Respuesta:</p>
+    <p>La API redireccionará automáticamente al usuario a la URL original, como por ejemplo <code>https://www.ejemplo.com/articulo-largo</code>.</p>
+
+    <h2>Interfaz de Usuario (HTML)</h2>
+    <p>La aplicación cuenta con una interfaz de usuario simple en HTML y JavaScript que permite a los usuarios acortar URLs desde el navegador. Para acceder a la interfaz, simplemente navega a <code>http://shorten.angelcairon.com/</code> y sigue las instrucciones en pantalla.</p>
+
+    <h2>Consideraciones Finales</h2>
+    <p>Esta es una versión básica de un acortador de URLs. En un entorno de producción, es necesario considerar aspectos como la escalabilidad, la seguridad y la gestión de las URLs acortadas. También es recomendable agregar validaciones adicionales y pruebas para garantizar el correcto funcionamiento de la aplicación en diferentes escenarios.</p>
+
+    <p>¡Listo! Con esta documentación, podrás utilizar y comprender cómo funciona la aplicación de acortador de URLs que hemos desarrollado.</p>
+</body>
+
+</html>
