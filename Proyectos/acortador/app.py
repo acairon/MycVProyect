@@ -2,9 +2,11 @@ import sqlite3
 import random
 import string
 from flask import Flask, redirect, request, jsonify
-
+from flask_cors import CORS
 app = Flask(__name__)
 
+
+CORS(app)  # Habilitar CORS en la aplicación Flask
 
 # Función para generar una cadena acortada aleatoria
 def generate_short_url():
