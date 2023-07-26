@@ -3,6 +3,7 @@ import random
 import string
 from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
+
 app = Flask(__name__)
 
 
