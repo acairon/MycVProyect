@@ -1,0 +1,73 @@
+import sqlite3
+import random
+import string
+from flask import Flask, redirect, request
+
+app = Flask(__name__)
+
+
+# Función para generar una cadena acortada aleatoria
+def generate_short_url():
+    characters = string.ascii_letters + string.digits
+    short_url = ''.join(random.choice(characters) for _ in range(8))
+    return short_url
+
+
+# Ruta para acortar una URL larga
+@app.route('/shorten', methods=['POST'])
+def shorten_url():
+    original_url = request.form['url']
+
+    # Conectar a la base de datos SQLite
+    conn = sqlite3.connect('url_shortener.db')
+    cursor = conn.cursor()
+
+    # Verificar si la URL ya ha sido acortada previamente
+    cursor.execute("SELECT shortened_url FROM urls WHERE original_url=?", (original_url,))
+    row = cursor.fetchone()
+    if row:
+        short_url = row[0]
+    else:
+        # Generar una URL acortada nueva
+        short_url = generate_short_url()
+        cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (?, ?)", (original_url, short_url))
+        conn.commit()
+
+    conn.close()
+
+    return f'URL acortada: http://tu-dominio.com/{short_url}'
+
+
+# Ruta para redireccionar a la URL original
+@app.route('/<short_url>')
+def redirect_to_original(short_url):
+    # Conectar a la base de datos SQLite
+    conn = sqlite3.connect('url_shortener.db')
+    cursor = conn.cursor()
+
+    # Buscar la URL original en la base de datos
+    cursor.execute("SELECT original_url FROM urls WHERE shortened_url=?", (short_url,))
+    row = cursor.fetchone()
+
+    if row:
+        original_url = row[0]
+        conn.close()
+        return redirect(original_url, code=302)
+    else:
+        conn.close()
+        return 'URL no encontrada', 404
+
+
+if __name__ == '__main__':
+    # Crear la tabla 'urls' en la base de datos si no existe
+    conn = sqlite3.connect('url_shortener.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS urls (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        original_url TEXT NOT NULL,
+                        shortened_url TEXT NOT NULL UNIQUE
+                    )''')
+    conn.commit()
+    conn.close()
+
+    app.run(host='0.0.0.0', port=5000)
