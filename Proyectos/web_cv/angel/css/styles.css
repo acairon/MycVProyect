@@ -1,105 +1,212 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
 
-.header {
-  background-color: #007bff;
-  padding: 80px 0;
-  color: #fff;
-}
+        body {
+            background-color: #f1f8ff;
+        }
 
-.header h1 {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+        .navbar {
+            background-color: #009688;
+        }
 
-.header p {
-  font-size: 18px;
-  font-weight: normal;
-}
+        .navbar-brand {
+            color: #fff;
+        }
 
-.section {
-  padding: 60px 0;
-}
+        .navbar-nav .nav-link {
+            color: #fff;
+        }
 
-.section-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 40px;
-}
+        .navbar-toggler-icon {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><path stroke="rgba(255,255,255,1)" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path></svg>');
+        }
 
-.section-subtitle {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+        /* Add custom animations */
+        .animate__animated.animate__fadeInUp {
+            animation-duration: 1s;
+            animation-delay: 0.2s;
+        }
 
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
+        .animate__animated.animate__fadeInDown {
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
 
-.bg-light {
-  background-color: #f8f9fa;
-}
+        .animate__animated.animate__fadeInRight {
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
 
-.card {
-  height: 300px;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-}
+        .animate__animated.animate__fadeInLeft {
+            animation-duration: 1s;
+            animation-delay: 0.5s;
+        }
 
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
+        .wow {
+            visibility: hidden;
+        }
 
-.card-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
+        /* Custom Skills Section */
+        #skills {
+            background-color: #fff;
+            padding: 60px 0;
+        }
 
-.card-text {
-  font-size: 16px;
-  color: #666;
-}
+        #skills .container {
+            max-width: 800px;
+        }
 
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-}
+        #skills h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #009688;
+        }
 
-.btn-primary:hover {
-  background-color: #0056b3;
-}
+        #skills .skill-group {
+            margin-bottom: 30px;
+        }
 
-.footer {
-  padding: 20px 0;
-  color: #fff;
-}
+        #skills .skill-group h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #009688;
+        }
 
-.footer span {
-  font-size: 14px;
-}
+        #skills .skill-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
 
-.navbar {
-  background-color: #007bff !important;
-}
+        #skills .skill-list li {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
 
-.navbar .navbar-brand {
-  font-size: 24px;
-  font-weight: bold;
-}
+        /* Custom Card Styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
 
-.navbar .nav-link {
-  font-size: 18px;
-  font-weight: normal;
-}
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #009688;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #009688;
+            border: none;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #00796B;
+        }
+
+        .header {
+            background-color: #0081a7;
+            color: #ffffff;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        /* Custom Certifications and Titles */
+        #certifications {
+            background-color: #f1f8ff;
+            padding: 60px 0;
+        }
+
+        #certifications .section-title {
+            color: #009688;
+        }
+
+        #certifications .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        #certifications .card-body {
+            padding: 20px;
+        }
+
+        #certifications .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #009688;
+            margin-bottom: 10px;
+        }
+
+        #certifications .card-text {
+            color: #555;
+        }
+
+        /* Custom Portfolio Section */
+        #portfolio {
+            background-color: #fff;
+            padding: 60px 0;
+        }
+
+        #portfolio .section-title {
+            color: #009688;
+            margin-bottom: 30px;
+        }
+
+        #portfolio .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        #portfolio .card:hover {
+            transform: translateY(-5px);
+        }
+
+        #portfolio .card-body {
+            padding: 20px;
+        }
+
+        #portfolio .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #009688;
+            margin-bottom: 10px;
+        }
+
+        #portfolio .card-text {
+            color: #555;
+        }
+
+        /* Custom Contact Section */
+        #contact {
+            background-color: #f1f8ff;
+            padding: 60px 0;
+        }
+
+        #contact .section-title {
+            color: #009688;
+            margin-bottom: 30px;
+        }
+
+        #contact p {
+            color: #555;
+        }
