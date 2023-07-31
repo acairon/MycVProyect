@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
 from flask import Flask, redirect, request, jsonify
 from starlette.staticfiles import StaticFiles
+from flask_cors import CORS
 
 app = Flask(__name__)
 
