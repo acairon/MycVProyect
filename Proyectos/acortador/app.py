@@ -19,7 +19,8 @@ def generate_short_url():
 # Ruta para acortar una URL larga
 @app.route('/shorten', methods=['POST'])
 def shorten_url():
-@@ -25,54 +30,39 @@ def shorten_url():
+    data = request.get_json()
+    original_url = data.get('url')
     if not original_url:
         return jsonify({'error': 'URL no proporcionada'}), 400
 
