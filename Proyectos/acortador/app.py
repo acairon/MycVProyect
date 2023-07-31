@@ -62,8 +62,9 @@ def redirect_to_original(short_url):
 
             if row:
                 original_url = row[0]
-                print(original_url)
-                return redirect(original_url, code=302)
+                # Concatenar el código de la URL acortada con el prefijo correcto
+                full_url = f"https://shorten.angelcairon.com/{short_url}"
+                return redirect(full_url, code=302)
             else:
                 return jsonify({'error': 'URL acortada no encontrada'}), 404
 
