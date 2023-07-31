@@ -37,7 +37,7 @@ def shorten_url():
         with conn.cursor() as cursor:
             # Verificar si la URL ya ha sido acortada previamente
 
-            cursor.execute("SELECT shortened_url FROM urls WHERE original_url=?", (original_url,))
+            cursor.execute("SELECT shortened_url FROM urls WHERE original_url = :original_url", {'original_url': original_url})
             row = cursor.fetchone()
             if row:
                 short_url = row[0]
@@ -60,7 +60,7 @@ def redirect_to_original(short_url):
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Buscar la URL original en la base de datos
-            cursor.execute("SELECT original_url FROM urls WHERE shortened_url=?", (short_url,))
+            cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': short_url})
             row = cursor.fetchone()
             if row:
                 original_url = row[0]
