@@ -10,8 +10,6 @@ app = Flask(__name__)
 
 load_dotenv()
 
-app = Flask(__name__)
-
 CORS(app)  # Habilitar CORS en la aplicación Flask
 
 un = os.environ.get('PYTHON_USERNAME')
@@ -38,7 +36,7 @@ def shorten_url():
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Verificar si la URL ya ha sido acortada previamente
-            cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': f'http://apishorten.angelcairon.com/{original_url}'})
+            cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': original_url})
             row = cursor.fetchone()
 
             if row:
