@@ -36,7 +36,6 @@ def shorten_url():
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Verificar si la URL ya ha sido acortada previamente
-
             cursor.execute("SELECT shortened_url FROM urls WHERE original_url = :original_url", {'original_url': original_url})
             row = cursor.fetchone()
             if row:
@@ -44,13 +43,10 @@ def shorten_url():
             else:
                 # Generar una URL acortada nueva
                 short_url = generate_short_url()
-                cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (?, ?)",
-                               (original_url, short_url))
+                cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (:original_url, :short_url)", {'original_url': original_url, 'short_url': short_url})
                 conn.commit()
 
-            conn.close()
-
-            return jsonify({'shortened_url': f'http://apishorten.angelcairon.com/{short_url}'}), 200
+    return jsonify({'shortened_url': f'http://apishorten.angelcairon.com/{short_url}'}), 200
 
 # Ruta para redireccionar a la URL original
 @app.route('/<short_url>')
