@@ -60,8 +60,10 @@ def redirect_to_original(short_url):
             row = cursor.fetchone()
             if row:
                 original_url = row[0]
+                if not original_url.startswith('http://') and not original_url.startswith('https://'):
+                    original_url = 'http://' + original_url  # Asegurarse de que la URL tenga el prefijo http:// o https://
                 conn.close()
-                return redirect(original_url, code=302)  # Redirigir a la URL original, no a la acortada
+                return redirect(original_url, code=302)  # Redirigir a la URL original
             else:
                 conn.close()
                 return jsonify({'error': 'URL acortada no encontrada'}), 404
