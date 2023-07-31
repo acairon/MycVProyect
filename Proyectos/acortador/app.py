@@ -35,7 +35,7 @@ def shorten_url():
         return jsonify({'error': 'URL no proporcionada'}), 400
 
     # Realizar la conexión a la base de datos de Oracle
-    with oracledb.connect(user='usuario', password='password', dsn='nombre_de_servicio') as conn:
+    with oracledb.connect(user=un, password=pw, dsn=cs) as conn:
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Verificar si la URL ya ha sido acortada previamente
