@@ -3,7 +3,13 @@ import string
 import oracledb
 from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
+from flask import Flask, redirect, request, jsonify
 from starlette.staticfiles import StaticFiles
+
+app = Flask(__name__)
+
+
+CORS(app)  # Habilitar CORS en la aplicación Flask
 
 app = FastAPI()
 
