@@ -81,13 +81,13 @@
 
     <script>
         function acortarURL() {
-            var originalURL = document.getElementById("url").value;
+            var original_url = document.getElementById("url").value;
             fetch('https://apishorten.angelcairon.com/shorten', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'  // Asegura que el encabezado Content-Type sea application/json
                 },
-                body: JSON.stringify({ url: originalURL })  // Convierte los datos a formato JSON
+                body: JSON.stringify({ url: original_url })  // Convierte los datos a formato JSON
             })
             .then(response => response.json())
             .then(data => {
