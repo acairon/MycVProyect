@@ -36,18 +36,21 @@ def shorten_url():
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Verificar si la URL ya ha sido acortada previamente
-            cursor.execute("SELECT shortened_url FROM urls WHERE original_url = :original_url", {'original_url': original_url})
-            row = cursor.fetchone()
 
+            cursor.execute("SELECT shortened_url FROM urls WHERE original_url=?", (original_url,))
+            row = cursor.fetchone()
             if row:
                 short_url = row[0]
             else:
                 # Generar una URL acortada nueva
                 short_url = generate_short_url()
-                cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (:original_url, :short_url)", {'original_url': original_url, 'short_url': short_url})
+                cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (?, ?)",
+                               (original_url, short_url))
                 conn.commit()
 
-    return jsonify({'shortened_url': short_url}), 200
+            conn.close()
+
+            return jsonify({'shortened_url': f'http://apishorten.angelcairon.com/{short_url}'}), 200
 
 # Ruta para redireccionar a la URL original
 @app.route('/<short_url>')
@@ -57,13 +60,14 @@ def redirect_to_original(short_url):
         # Crear un cursor para interactuar con la base de datos
         with conn.cursor() as cursor:
             # Buscar la URL original en la base de datos
-            cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': short_url})
+            cursor.execute("SELECT original_url FROM urls WHERE shortened_url=?", (short_url,))
             row = cursor.fetchone()
             if row:
                 original_url = row[0]
-                # Concatenar el código de la URL acortada con el prefijo correcto
+                conn.close()
                 return redirect(original_url, code=302)
             else:
+                conn.close()
                 return jsonify({'error': 'URL acortada no encontrada'}), 404
 
 if __name__ == '__main__':
