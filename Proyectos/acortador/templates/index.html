@@ -1,17 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acortador de Enlaces</title>
 </head>
+
 <body>
     <h1>Acortador de Enlaces</h1>
-    <form action="/shorten" method="post">
-        <label for="long_url">Ingrese el enlace que desea acortar:</label><br>
-        <input type="text" id="long_url" name="long_url" required><br>
-        <input type="submit" value="Acortar">
-    </form>
-    <?php if(isset($short_url)): ?>
-        <p>Enlace acortado: <a href="<?php echo $short_url; ?>" target="_blank"><?php echo $short_url; ?></a></p>
-    <?php endif; ?>
+    <label for="url">Ingresa tu URL:</label>
+    <input type="text" id="url" placeholder="https://www.ejemplo.com" required>
+    <button onclick="acortarURL()">Acortar</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        function acortarURL() {
+            var originalURL = document.getElementById("url").value;
+            fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: originalURL })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML = 'URL acortada: <a href="' + data.shortened_url + '" target="_blank">' + data.shortened_url + '</a>';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </body>
+
 </html>

@@ -1,17 +1,73 @@
-from flask import Flask, request, render_template_string
-import hashlib
+import random
+import string
+import oracledb
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route('/')
-def index():
-    return render_template_string(open('templates/index.html').read())
+# Conexión a la base de datos de Oracle
+def get_db_connection():
+    conn = oracledb.connect('usuario/oracle@nombre_de_servicio')
+    return conn
 
-@app.route('/shorten', methods=['POST'])
-def shorten():
-    long_url = request.form['long_url']
-    short_url = hashlib.md5(long_url.encode()).hexdigest()[:8]
-    return render_template_string(open('templates/index.html').read(), short_url=short_url)
+# Función para generar una cadena acortada aleatoria
+def generate_short_url():
+    characters = string.ascii_letters + string.digits
+    short_url = ''.join(random.choice(characters) for _ in range(8))
+    return short_url
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Modelo para la solicitud de acortar URL
+class ShortenRequest(BaseModel):
+    url: str
+
+# Modelo para la respuesta de URL acortada
+class ShortenResponse(BaseModel):
+    shortened_url: str
+
+# Ruta para acortar una URL larga
+@app.post("/shorten", response_model=ShortenResponse)
+def shorten_url(request: ShortenRequest):
+    original_url = request.url
+
+    # Realizar la conexión a la base de datos de Oracle
+    with get_db_connection() as conn:
+        # Crear un cursor para interactuar con la base de datos
+        with conn.cursor() as cursor:
+            # Verificar si la URL ya ha sido acortada previamente
+            cursor.execute("SELECT shortened_url FROM urls WHERE original_url = :original_url", {'original_url': original_url})
+            row = cursor.fetchone()
+            if row:
+                short_url = row[0]
+            else:
+                # Generar una URL acortada nueva
+                short_url = generate_short_url()
+                cursor.execute("INSERT INTO urls (original_url, shortened_url) VALUES (:original_url, :short_url)", {'original_url': original_url, 'short_url': short_url})
+                conn.commit()
+
+    return ShortenResponse(shortened_url=f'http://apishorten.angelcairon.com/{short_url}')
+
+# Ruta para redireccionar a la URL original
+@app.get("/{short_url}")
+def redirect_to_original(short_url: str, request: Request):
+    # Realizar la conexión a la base de datos de Oracle
+    with get_db_connection() as conn:
+        # Crear un cursor para interactuar con la base de datos
+        with conn.cursor() as cursor:
+            # Buscar la URL original en la base de datos
+            cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': short_url})
+            row = cursor.fetchone()
+            if row:
+                original_url = row[0]
+                return request.redirect(original_url)
+            else:
+                return "URL acortada no encontrada"
+
+templates = Jinja2Templates(directory="templates")
+
+# Ruta para servir la página HTML
+@app.get("/", response_class=HTMLResponse)
+def read_item(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
