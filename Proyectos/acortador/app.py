@@ -62,6 +62,7 @@ def redirect_to_original(short_url):
 
             if row:
                 original_url = row[0]
+                print(original_url)
                 return redirect(original_url, code=302)
             else:
                 return jsonify({'error': 'URL acortada no encontrada'}), 404
