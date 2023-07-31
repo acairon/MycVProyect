@@ -82,7 +82,7 @@
     <script>
         function acortarURL() {
             var originalURL = document.getElementById("url").value;
-            fetch('/shorten/', {
+            fetch('https://apishorten.angelcairon.com/shorten/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
