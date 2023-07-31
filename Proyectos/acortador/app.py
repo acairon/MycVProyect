@@ -3,27 +3,23 @@ import string
 import oracledb
 from fastapi import FastAPI, HTTPException, Form
 from fastapi.responses import HTMLResponse
-from flask import Flask, redirect, request, jsonify
 from starlette.staticfiles import StaticFiles
-from flask_cors import CORS
-
-app = Flask(__name__)
-
-
-CORS(app)  # Habilitar CORS en la aplicación Flask
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Configurar el CORS para permitir solicitudes desde cualquier origen
+origins = ["*"]
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+
 # Montar el directorio "static" para servir el archivo index.html
 app.mount("/static", StaticFiles(directory="."), name="static")
-
 
 # Función para generar una cadena acortada aleatoria
 def generate_short_url():
     characters = string.ascii_letters + string.digits
     short_url = ''.join(random.choice(characters) for _ in range(8))
     return short_url
-
 
 # Ruta para acortar una URL larga
 @app.post("/shorten/", response_class=HTMLResponse)
@@ -49,7 +45,6 @@ async def shorten_url(url: str = Form(...)):
     # Devolver el HTML con la URL acortada
     return f'<html><body><h1>URL acortada: <a href="{short_url}" target="_blank">{short_url}</a></h1></body></html>'
 
-
 # Ruta para redireccionar a la URL original
 @app.get("/{short_url}", response_class=HTMLResponse)
 async def redirect_to_original(short_url: str):
@@ -69,3 +64,5 @@ async def redirect_to_original(short_url: str):
             else:
                 conn.close()
                 raise HTTPException(status_code=404, detail="URL acortada no encontrada")
+
+Con esta configuración, el CORS debería estar habilitado correctamente en tu API y permitir
