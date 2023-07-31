@@ -64,5 +64,3 @@ async def redirect_to_original(short_url: str):
             else:
                 conn.close()
                 raise HTTPException(status_code=404, detail="URL acortada no encontrada")
-
-Con esta configuración, el CORS debería estar habilitado correctamente en tu API y permitir
