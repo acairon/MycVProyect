@@ -59,12 +59,10 @@ def redirect_to_original(short_url):
             # Buscar la URL original en la base de datos
             cursor.execute("SELECT original_url FROM urls WHERE shortened_url = :short_url", {'short_url': short_url})
             row = cursor.fetchone()
-
             if row:
                 original_url = row[0]
                 # Concatenar el código de la URL acortada con el prefijo correcto
-                full_url = f"https://shorten.angelcairon.com/{short_url}"
-                return redirect(full_url, code=302)
+                return redirect(original_url, code=302)
             else:
                 return jsonify({'error': 'URL acortada no encontrada'}), 404
 
