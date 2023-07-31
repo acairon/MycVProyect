@@ -10,8 +10,8 @@
         <input type="text" id="long_url" name="long_url" required><br>
         <input type="submit" value="Acortar">
     </form>
-    {% if short_url %}
-        <p>Enlace acortado: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></p>
-    {% endif %}
+    <?php if(isset($short_url)): ?>
+        <p>Enlace acortado: <a href="<?php echo $short_url; ?>" target="_blank"><?php echo $short_url; ?></a></p>
+    <?php endif; ?>
 </body>
 </html>
