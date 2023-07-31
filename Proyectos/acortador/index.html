@@ -82,16 +82,20 @@
     <script>
         function acortarURL() {
             var originalURL = document.getElementById("url").value;
-            fetch('https://apishorten.angelcairon.com/shorten/', {
+            fetch('https://apishorten.angelcairon.com/shorten', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'  // Asegura que el encabezado Content-Type sea application/json
                 },
-                body: 'url=' + encodeURIComponent(originalURL)
+                body: JSON.stringify({ url: originalURL })  // Convierte los datos a formato JSON
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                document.getElementById("result").innerHTML = data;
+                if ('shortened_url' in data) {
+                    document.getElementById("result").innerHTML = 'URL acortada: <a href="' + data.shortened_url + '" target="_blank">' + data.shortened_url + '</a>';
+                } else {
+                    document.getElementById("result").innerHTML = 'Error: ' + data.error;
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
