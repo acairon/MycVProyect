@@ -4,6 +4,7 @@ import oracledb
 import os
 from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
