@@ -5,6 +5,10 @@ import oracledb
 from flask import Flask, redirect, request, jsonify
 from flask_cors import CORS
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 app = Flask(__name__)
 
 CORS(app)  # Habilitar CORS en la aplicación Flask
